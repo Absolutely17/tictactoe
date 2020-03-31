@@ -7,7 +7,9 @@ import com.absolutely.tictactoe.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class MenuController {
@@ -34,5 +36,15 @@ public class MenuController {
             GamesEntity gamesToConnect = gameService.getGamesById(id);
             GamesEntity gameEdited = gamesToConnect.edit(connectRequest);
             return gameService.edit(gameEdited);
+    }
+
+    @RequestMapping(
+            method=RequestMethod.POST,
+            path="/game/create",
+            consumes="application/json",
+            produces="application/json"
+    )
+    public GamesEntity createGame(@RequestBody Map<String, String> request){
+        return gameService.addGame(request.get("name"));
     }
 }

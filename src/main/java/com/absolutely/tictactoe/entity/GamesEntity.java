@@ -4,12 +4,15 @@ import com.absolutely.tictactoe.request.ConnectRequest;
 
 import javax.persistence.*;
 
+import static javax.persistence.GenerationType.AUTO;
+
 
 @Entity
 @Table(name = "games")
 public class GamesEntity {
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = AUTO)
     private Long id;
 
     @Column(name = "opened", nullable = false)
@@ -51,6 +54,14 @@ public class GamesEntity {
 
     public void setSecondPlayer(String secondPlayer) {
         this.secondPlayer = secondPlayer;
+    }
+    public GamesEntity()
+    { }
+    public GamesEntity(String name)
+    {
+        this.firstPlayer=name;
+        this.secondPlayer=null;
+        this.opened=true;
     }
 
     public GamesEntity edit(ConnectRequest connectRequest)

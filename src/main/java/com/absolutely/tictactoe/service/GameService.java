@@ -36,4 +36,12 @@ public class GameService implements IGameService {
         gamesRepository.save(game);
         return new ConnectResponse(game);
     }
+
+    @Override
+    public GamesEntity addGame(String name)
+    {
+        GamesEntity game = new GamesEntity(name);
+        gamesRepository.save(game);
+        return game;
+    }
 }

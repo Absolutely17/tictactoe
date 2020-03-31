@@ -5,13 +5,15 @@ import Menu from './menu';
 import Game from './game';
 
 class App extends Component {
+
     render() {
         return (
             <BrowserRouter>
                 <div>
+                    <div><p></p></div>
                     <Switch>
-                        <Route path="/" component={Menu} exact/>
-                        <Route path="/game" component={Game}/>
+                        <Route path="/" component={Menu}  exact/>
+                        <Route path="/game" component={Game} />
                         <Route component={Error}/>
                     </Switch>
                 </div>

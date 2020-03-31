@@ -3,16 +3,24 @@ import React from "react";
 import axios from 'axios';
 
 class Menu extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
-        this.joinClick = this.joinClick.bind(this)
+        this.joinClick = this.joinClick.bind(this);
+        this.newGameClick = this.newGameClick.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
     state ={
-        games : []
+        games : [],
+        name : ''
     };
-    onClick(){
-        window.location.assign('/game')
+    newGameClick(){
+        axios.post('http://localhost:8080/game/create',
+            {name:this.state.name})
+            .then(res => {
+                this.props.updateData(this.state.name);
+                window.location.assign('/game?id=' + res.data.id);
+            })
     }
     componentDidMount() {
         axios.get('http://localhost:8080/games')
@@ -25,8 +33,13 @@ class Menu extends React.Component {
         axios.post('http://localhost:8080/game/' + data + '/connect',
             {gameId : data})
             .then(() => {
+                this.props.updateData(this.state.name);
                 window.location.assign('/game?id=' + data);
             })
+    }
+    handleChange(event)
+    {
+        this.setState({name:event.target.value});
     }
     render() {
         const openGames = [];
@@ -36,7 +49,8 @@ class Menu extends React.Component {
         return (
             <div class="menu">
             <div className="menuButton">
-                <button onClick={(e) => this.onClick(e)} className="startGame">Start New Game</button>
+                <input type="text" value={this.state.name} onChange={this.handleChange}></input>
+                <button onClick={() => this.newGameClick()} className="startGame">Start New Game</button>
             </div>
                 <div className="listGames">
                     {this.state.games.map((data, i) => (

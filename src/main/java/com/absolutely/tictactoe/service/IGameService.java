@@ -10,4 +10,5 @@ public interface IGameService {
     List<GamesEntity> getOpenGames();
     GamesEntity getGamesById(Long id);
     ConnectResponse edit(GamesEntity game);
+    GamesEntity addGame(String name);
 }
