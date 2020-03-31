@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface GamesRepository extends JpaRepository<GamesEntity, Boolean> {
+public interface GamesRepository extends JpaRepository<GamesEntity, Long> {
     @Query("from GamesEntity r where r.opened =:isOpened")
     List<GamesEntity> findOpenGames(@Param("isOpened") boolean isOpened);
 }

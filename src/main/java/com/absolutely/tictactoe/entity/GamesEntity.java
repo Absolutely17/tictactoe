@@ -1,5 +1,7 @@
 package com.absolutely.tictactoe.entity;
 
+import com.absolutely.tictactoe.request.ConnectRequest;
+
 import javax.persistence.*;
 
 
@@ -49,5 +51,13 @@ public class GamesEntity {
 
     public void setSecondPlayer(String secondPlayer) {
         this.secondPlayer = secondPlayer;
+    }
+
+    public GamesEntity edit(ConnectRequest connectRequest)
+    {
+        if (connectRequest.getName()!=null)
+            this.secondPlayer=connectRequest.getName();
+        this.opened=false;
+        return this;
     }
 }
