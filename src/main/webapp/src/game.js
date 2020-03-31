@@ -1,8 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import { BrowserRouter } from 'react-router-dom'
-import App from "./App";
+import React from "react";
+
 class Square extends React.Component {
     render() {
         return (
@@ -28,9 +25,9 @@ class Board extends React.Component {
     }
     renderSquare(i) {
         return (<Square
-            value={this.state.squares[i]}
-            onClick={() => this.handleClick(i)}
-        />
+                value={this.state.squares[i]}
+                onClick={() => this.handleClick(i)}
+            />
         );
     }
     render() {
@@ -48,8 +45,8 @@ class Board extends React.Component {
         );
     }
 }
-
 class Game extends React.Component {
+
     render() {
         return (
             <div className="game">
@@ -64,12 +61,4 @@ class Game extends React.Component {
         );
     }
 }
-
-// ========================================
-
-ReactDOM.render((
-    <BrowserRouter>
-    <App/>
-    </BrowserRouter>),
-    document.getElementById('root')
-);
+export default Game;
