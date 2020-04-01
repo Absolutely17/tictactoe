@@ -1,6 +1,7 @@
 package com.absolutely.tictactoe.entity;
 
 import com.absolutely.tictactoe.request.ConnectRequest;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
@@ -23,6 +24,18 @@ public class GamesEntity {
 
     @Column(name = "secondPlayer")
     private String secondPlayer;
+
+    @Column(name = "winner")
+    private String winner;
+
+    @Column(name = "currentMove")
+    private String currentMove;
+
+    @Column(name ="cells", length = 10000, columnDefinition = "BLOB")
+    private byte[] cells;
+
+    @Column(name = "lastMove")
+    private int lastMove;
 
     public Long getId() {
         return id;
@@ -55,6 +68,39 @@ public class GamesEntity {
     public void setSecondPlayer(String secondPlayer) {
         this.secondPlayer = secondPlayer;
     }
+
+    public String getWinner() {
+        return winner;
+    }
+
+    public void setWinner(String winner) {
+        this.winner = winner;
+    }
+
+    public String getCurrentMove() {
+        return currentMove;
+    }
+
+    public void setCurrentMove(String currentMove) {
+        this.currentMove = currentMove;
+    }
+
+    public int getLastMove() {
+        return lastMove;
+    }
+
+    public void setLastMove(int lastMove) {
+        this.lastMove = lastMove;
+    }
+
+    public byte[] getCells() {
+        return cells;
+    }
+
+    public void setCells(byte[] cells) {
+        this.cells = cells;
+    }
+
     public GamesEntity()
     { }
     public GamesEntity(String name)
@@ -62,6 +108,10 @@ public class GamesEntity {
         this.firstPlayer=name;
         this.secondPlayer=null;
         this.opened=true;
+        this.winner=null;
+        this.currentMove=null;
+        this.cells = new byte[362];
+        this.lastMove=-1;
     }
 
     public GamesEntity edit(ConnectRequest connectRequest)
@@ -69,6 +119,7 @@ public class GamesEntity {
         if (connectRequest.getName()!=null)
             this.secondPlayer=connectRequest.getName();
         this.opened=false;
+        this.currentMove=this.firstPlayer;
         return this;
     }
 }

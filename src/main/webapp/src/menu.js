@@ -18,8 +18,7 @@ class Menu extends React.Component {
         axios.post('http://localhost:8080/game/create',
             {name:this.state.name})
             .then(res => {
-                this.props.updateData(this.state.name);
-                window.location.assign('/game?id=' + res.data.id);
+                window.location.assign('/game?id=' + res.data.id + '&name=' + this.state.name);
             })
     }
     componentDidMount() {
@@ -31,10 +30,10 @@ class Menu extends React.Component {
     }
     joinClick(data){
         axios.post('http://localhost:8080/game/' + data + '/connect',
-            {gameId : data})
+            {gameId : data,
+            name:this.state.name})
             .then(() => {
-                this.props.updateData(this.state.name);
-                window.location.assign('/game?id=' + data);
+                window.location.assign('/game?id=' + data + '&name=' + this.state.name);
             })
     }
     handleChange(event)
