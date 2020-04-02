@@ -6,8 +6,12 @@ Response:
 {
 	"id": 1,
 	"opened":true,
-	"firstPlayer":Ilya,
-	"secondPlayer":Anton
+	"firstPlayer":"Ilya",
+	"secondPlayer":null,
+	"winner":null,
+	"currentMove":null,
+	"lastMove":-1,
+	"isClosedByPlayer":false
 }
 
 POST /game/{gameId}/connect - подключиться к открытой игре
@@ -15,7 +19,7 @@ POST /game/{gameId}/connect - подключиться к открытой иг�
 Request:
 {
 	"gameId":1,
-	"name":Ilya
+	"name":"Ilya"
 }
 
 Response:
@@ -24,7 +28,77 @@ Response:
 	"game":{
 			"id":1,
 			"opened":false,
-			"firstPlayer":Genadiy,
-			"secondPlayer":Ilya
+			"firstPlayer":"Genadiy",
+			"secondPlayer":"Ilya",
+			"winner":null,
+			"currentMove":"Genadiy",
+			"lastMove":-1,
+			"isClosedByPlayer":false
 			}
+}
+
+POST /game/create - создать новую игру
+
+Request:
+{
+	"name":"Ilya"
+}
+
+Response:
+{
+	"id":2,
+	"opened":true,
+	"firstPlayer":"Ilya",
+	"secondPlayer":null,
+	"winner":null,
+	"currentMove":null,
+	"lastMove":-1,
+	"isClosedByPlayer":false
+}
+
+GET /game/{id}/state - получить текущее состояние игры
+
+Response:
+{
+	"id": 1,
+	"opened":false,
+	"firstPlayer":"Ilya",
+	"secondPlayer":"Anton",
+	"winner":null,
+	"currentMove":"Ilya",
+	"lastMove":5,
+	"isClosedByPlayer":false
+}
+
+POST /game/{id}/move - сделать ход
+
+Request
+{
+	"cell":45,
+	"name":"Ilya"
+}
+
+Response
+{
+	"successful":true,
+	"cell":45
+}
+
+POST /game/{id}/exit - выйти из текущей игры
+
+Request
+{
+	"name":"Ilya"
+}
+
+Response
+{
+	"id": 1,
+	"opened":false,
+	"firstPlayer":"Ilya",
+	"secondPlayer":"Anton",
+	"winner":null,
+	"currentMove":"Ilya",
+	"lastMove":5,
+	"isClosedByPlayer":true	
 }
