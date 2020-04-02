@@ -3,6 +3,7 @@ package com.absolutely.tictactoe.controller;
 import com.absolutely.tictactoe.entity.GamesEntity;
 import com.absolutely.tictactoe.request.ConnectRequest;
 import com.absolutely.tictactoe.response.ConnectResponse;
+import com.absolutely.tictactoe.response.GameSimpleResponse;
 import com.absolutely.tictactoe.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class MenuController {
             path="/games",
             produces = "application/json"
     )
-    public List<GamesEntity> get()
+    public List<GameSimpleResponse> get()
     {
         return gameService.getOpenGames();
     }
@@ -44,7 +45,7 @@ public class MenuController {
             consumes="application/json",
             produces="application/json"
     )
-    public GamesEntity createGame(@RequestBody Map<String, String> request){
+    public GameSimpleResponse createGame(@RequestBody Map<String, String> request){
         return gameService.addGame(request.get("name"));
     }
 }

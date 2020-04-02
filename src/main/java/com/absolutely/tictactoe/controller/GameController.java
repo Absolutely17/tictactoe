@@ -2,10 +2,13 @@ package com.absolutely.tictactoe.controller;
 
 import com.absolutely.tictactoe.entity.GamesEntity;
 import com.absolutely.tictactoe.request.MoveRequest;
+import com.absolutely.tictactoe.response.GameSimpleResponse;
 import com.absolutely.tictactoe.response.MoveResponse;
 import com.absolutely.tictactoe.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 public class GameController {
@@ -18,9 +21,9 @@ public class GameController {
             path="/game/{id}/state",
             produces="application/json"
     )
-    public GamesEntity getState(@PathVariable(name="id") Long id)
+    public GameSimpleResponse getState(@PathVariable(name="id") Long id)
     {
-        return gameService.getGamesById(id);
+        return new GameSimpleResponse(gameService.getGamesById(id));
     }
 
     @RequestMapping(
@@ -33,5 +36,16 @@ public class GameController {
     {
         GamesEntity game = gameService.getGamesById(id);
         return gameService.doMove(game, moveRequest);
+    }
+
+    @RequestMapping(
+            method=RequestMethod.POST,
+            path="/game/{id}/exit",
+            consumes="application/json",
+            produces="application/json"
+    )
+    public GameSimpleResponse exitGame(@PathVariable(name="id") Long id, @RequestBody Map<String, String> request)
+    {
+        return gameService.exitGame(id, request.get("name"));
     }
 }

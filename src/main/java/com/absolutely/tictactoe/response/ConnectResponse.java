@@ -4,7 +4,7 @@ import com.absolutely.tictactoe.entity.GamesEntity;
 
 public class ConnectResponse {
     private Boolean successful;
-    private GamesEntity game;
+    private GameSimpleResponse game;
 
     public Boolean getSuccessful() {
         return successful;
@@ -14,16 +14,16 @@ public class ConnectResponse {
         this.successful = successful;
     }
 
-    public GamesEntity getGame() {
+    public GameSimpleResponse getGame() {
         return game;
     }
 
-    public void setGame(GamesEntity game) {
+    public void setGame(GameSimpleResponse game) {
         this.game = game;
     }
 
     public ConnectResponse(GamesEntity game) {
-        this.game = game;
+        this.game = new GameSimpleResponse(game);
         this.successful=true;
     }
 }

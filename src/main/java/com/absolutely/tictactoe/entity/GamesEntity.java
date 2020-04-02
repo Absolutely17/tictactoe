@@ -1,7 +1,6 @@
 package com.absolutely.tictactoe.entity;
 
 import com.absolutely.tictactoe.request.ConnectRequest;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
@@ -36,6 +35,9 @@ public class GamesEntity {
 
     @Column(name = "lastMove")
     private int lastMove;
+
+    @Column(name = "isClosedByPlayer")
+    private Boolean isClosedByPlayer;
 
     public Long getId() {
         return id;
@@ -101,6 +103,14 @@ public class GamesEntity {
         this.cells = cells;
     }
 
+    public Boolean getIsClosedByPlayer() {
+        return isClosedByPlayer;
+    }
+
+    public void setIsClosedByPlayer(Boolean isClosedByPlayer) {
+        isClosedByPlayer = isClosedByPlayer;
+    }
+
     public GamesEntity()
     { }
     public GamesEntity(String name)
@@ -112,6 +122,7 @@ public class GamesEntity {
         this.currentMove=null;
         this.cells = new byte[362];
         this.lastMove=-1;
+        this.isClosedByPlayer =false;
     }
 
     public GamesEntity edit(ConnectRequest connectRequest)

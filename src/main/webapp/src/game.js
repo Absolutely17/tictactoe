@@ -19,8 +19,11 @@ class Board extends React.Component {
             squares: Array(361).fill(null),
             id : this.props.id,
             name : this.props.name,
-            mark : 'X',
-            lastMove : this.props.lastMove
+            mark : 'N',
+            enemyMark: 'N',
+            lastMove : this.props.lastMove,
+            localLastMove: null,
+            data : []
         };
         this.tick();
     }
@@ -29,14 +32,19 @@ class Board extends React.Component {
             {cell:i,
             name:this.state.name})
             .then(res =>{
-                if (res.data.successful===true)
+                if (res.data.successful)
                     this.moveTo(i);
             });
     }
-    moveTo(i){
+    moveTo(i, b = false){
         const squares = this.state.squares.slice();
+        if (!b)
         squares[i]=this.state.mark;
-        this.setState({squares:squares});
+        else squares[i]=this.state.enemyMark;
+        this.setState({
+            squares:squares,
+            localLastMove:i
+        });
     }
     renderSquare(i) {
         return (<Square
@@ -46,27 +54,42 @@ class Board extends React.Component {
         );
     }
     componentDidMount() {
-
         this.timerID = setInterval(
             () => this.tick(),
             1000
         );
-
     }
+    componentWillUnmount() {
+        axios.post('http://localhost:8080/game/' + this.state.id + '/exit',
+            {name:this.state.name})
+            .then(res =>{
+                window.location.assign('/');
+            })
+    }
+
     tick() {
         axios.get('http://localhost:8080/game/' + this.state.id + '/state')
             .then(res => {
                 const dataFromServer = res.data;
                 this.setState({data:dataFromServer});
-                if (res.data.secondPlayer === null)
+                console.log(this.state.name);
+                console.log(res.data.firstPlayer);
+                if (this.state.mark==='N')
+                    if (this.state.name===res.data.firstPlayer) {
+                        this.setState({mark: 'X', enemyMark:'O'});
+                    }
+                    else {
+                        this.setState({mark: 'O', enemyMark:'X'});
+                    }
+                else if (res.data.secondPlayer == null)
                     this.setState({info:'Ожидаем второго игрока.'});
-                if (res.data.winner!==null)
-                    this.setState({info:'Победил ' + res.data.winner});
-                if (res.data.currentMove!==null)
+                else if (res.data.currentMove!=null)
                     this.setState({info:'Время ходить, ' + res.data.currentMove});
-                if (res.data.lastMove!==-1)
-                   this.moveTo(res.data.lastMove);
-            })
+                else if (res.data.winner!=null)
+                    this.setState({info:'Победил ' + res.data.winner});
+                if (res.data.lastMove!==-1 && res.data.lastMove!==this.state.localLastMove)
+                   this.moveTo(res.data.lastMove, true);
+            });
     }
     render() {
         const table = [];
