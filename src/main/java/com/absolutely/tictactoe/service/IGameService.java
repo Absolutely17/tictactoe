@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface IGameService {
     List<GameSimpleResponse> getOpenGames();
+    List<GameSimpleResponse> getAllGames();
     GamesEntity getGamesById(Long id);
     ConnectResponse edit(GamesEntity game);
     GameSimpleResponse addGame(String name);

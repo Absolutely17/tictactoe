@@ -25,9 +25,11 @@ public class MenuController {
             path="/games",
             produces = "application/json"
     )
-    public List<GameSimpleResponse> get()
+    public List<GameSimpleResponse> get(@PathVariable("all") boolean isAll )
     {
-        return gameService.getOpenGames();
+        if (isAll)
+            return gameService.getAllGames();
+        else return gameService.getOpenGames();
     }
 
     @RequestMapping(

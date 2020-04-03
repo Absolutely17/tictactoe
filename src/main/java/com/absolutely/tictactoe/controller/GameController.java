@@ -50,37 +50,5 @@ public class GameController {
     {
         return gameService.exitGame(id, request.get("name"));
     }
-
-    @RequestMapping(
-            method=RequestMethod.GET,
-            path="/test",
-            produces="application/json"
-    )
-    public TestResponse get()
-    {
-        Long id = new Long(65);
-        byte[] array2 = gameService.getGamesById(id).getCells();
-        String array = Base64.encodeBase64String(gameService.getGamesById(id).getCells());
-        return new TestResponse(Base64.encodeBase64String(gameService.getGamesById(id).getCells()));
-    }
 }
-class TestResponse{
-    private String str;
 
-    public String getStr() {
-        return str;
-    }
-
-    public void setStr(String str) {
-        this.str = str;
-    }
-
-    public TestResponse()
-    {
-
-    }
-    public TestResponse(String response)
-    {
-        this.str=response;
-    }
-}

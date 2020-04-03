@@ -2,7 +2,6 @@ package com.absolutely.tictactoe.service;
 
 import com.absolutely.tictactoe.entity.GamesEntity;
 import com.absolutely.tictactoe.repository.GamesRepository;
-import com.absolutely.tictactoe.request.ConnectRequest;
 import com.absolutely.tictactoe.request.MoveRequest;
 import com.absolutely.tictactoe.response.ConnectResponse;
 import com.absolutely.tictactoe.response.GameSimpleResponse;
@@ -28,6 +27,16 @@ public class GameService implements IGameService {
         for(GamesEntity g : foundGames)
             openGames.add(new GameSimpleResponse(g));
         return openGames;
+    }
+
+    @Override
+    public List<GameSimpleResponse> getAllGames()
+    {
+        List<GameSimpleResponse> games = new ArrayList<>();
+        List<GamesEntity> foundGames = gamesRepository.findAllGames();
+        for (GamesEntity g : foundGames)
+            games.add(new GameSimpleResponse(g));
+        return games;
     }
 
     @Override
@@ -137,6 +146,7 @@ public class GameService implements IGameService {
     {
         GamesEntity game = getGamesById(id);
         game.setClosedByPlayer(true);
+        game.setOpened(false);
         gamesRepository.save(game);
         return new GameSimpleResponse(game);
     }
