@@ -47,19 +47,28 @@ class Menu extends React.Component {
 
         return (
             <div class="menu">
-            <div className="menuButton">
-                <input type="text" value={this.state.name} onChange={this.handleChange}></input>
-                <button onClick={() => this.newGameClick()} className="startGame">Start New Game</button>
+                <div className="menu-column">
+            <div className="menuAttr">
+                <input placeholder="Enter name" className="inputName" type="text" value={this.state.name} onChange={this.handleChange}></input>
+                <button onClick={() => this.newGameClick()} className="startGameBtn">Start New Game</button>
             </div>
                 <div className="listGames">
+                    <thead>
+                    <tr>
+                        <th>№</th>
+                        <th>Имя хоста</th>
+                        <th>Действие</th>
+                    </tr>
+                    </thead>
                     {this.state.games.map((data, i) => (
                         <tr key={i}>
                             <td>{data.id}</td>
                             <td>{data.firstPlayer}</td>
-                            <td>{data.secondPlayer}</td>
-                            <button onClick={() => this.joinClick(data.id)}></button>
+                            <td><button onClick={() => this.joinClick(data.id)}>Присоединиться</button></td>
+
                         </tr>
                     ))}
+                </div>
                 </div>
             </div>
         )

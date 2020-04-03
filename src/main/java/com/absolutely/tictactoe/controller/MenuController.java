@@ -5,7 +5,10 @@ import com.absolutely.tictactoe.request.ConnectRequest;
 import com.absolutely.tictactoe.response.ConnectResponse;
 import com.absolutely.tictactoe.response.GameSimpleResponse;
 import com.absolutely.tictactoe.service.GameService;
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
@@ -33,10 +36,13 @@ public class MenuController {
             consumes = "application/json",
             produces = "application/json"
     )
-    public ConnectResponse connectToGame(@RequestBody ConnectRequest connectRequest, @PathVariable(name="gameId") Long id){
-            GamesEntity gamesToConnect = gameService.getGamesById(id);
-            GamesEntity gameEdited = gamesToConnect.edit(connectRequest);
-            return gameService.edit(gameEdited);
+    public ResponseEntity<?> connectToGame(@RequestBody ConnectRequest connectRequest, @PathVariable(name="gameId") Long id){
+            if (connectRequest.getName()!="") {
+                GamesEntity gamesToConnect = gameService.getGamesById(id);
+                GamesEntity gameEdited = gamesToConnect.edit(connectRequest);
+                return ResponseEntity.ok(gameService.edit(gameEdited));
+            }
+            else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping(
@@ -45,7 +51,9 @@ public class MenuController {
             consumes="application/json",
             produces="application/json"
     )
-    public GameSimpleResponse createGame(@RequestBody Map<String, String> request){
-        return gameService.addGame(request.get("name"));
+    public ResponseEntity<?> createGame(@RequestBody Map<String, String> request){
+        if (request.get("name")!="")
+        return ResponseEntity.ok(gameService.addGame(request.get("name")));
+        else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }

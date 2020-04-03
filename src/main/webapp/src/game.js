@@ -26,6 +26,7 @@ class Board extends React.Component {
             data : []
         };
         this.tick();
+        this.exitClick = this.exitClick.bind(this);
     }
     handleClick(i){
         axios.post('http://localhost:8080/game/' + this.state.id + '/move',
@@ -59,7 +60,7 @@ class Board extends React.Component {
             1000
         );
     }
-    componentWillUnmount() {
+    exitClick() {
         axios.post('http://localhost:8080/game/' + this.state.id + '/exit',
             {name:this.state.name})
             .then(res =>{
@@ -101,13 +102,16 @@ class Board extends React.Component {
         }
         return (
             <div>
-                <div className="info">
+                <div className="game-info">
                     <p>{this.state.info}</p>
                 </div>
             <div>
 
                 {table}
             </div>
+                <div className="exitGame">
+                    <button onClick={() => this.exitClick} className="exitBtn">Выйти</button>
+                </div>
             </div>
         );
     }
@@ -126,13 +130,9 @@ class Game extends React.Component {
     render() {
         return (
             <div className="game">
-                <div className="game-info">
-
-                </div>
                 <div className="game-board">
                     <Board id={this.state.id} name={this.state.name} />
                 </div>
-
             </div>
         );
     }
