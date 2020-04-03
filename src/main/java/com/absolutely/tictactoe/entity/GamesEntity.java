@@ -4,7 +4,6 @@ import com.absolutely.tictactoe.request.ConnectRequest;
 
 import javax.persistence.*;
 
-import static javax.persistence.GenerationType.AUTO;
 
 
 @Entity
@@ -12,7 +11,7 @@ import static javax.persistence.GenerationType.AUTO;
 public class GamesEntity {
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "opened", nullable = false)
