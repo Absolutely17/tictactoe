@@ -5,15 +5,14 @@ import axios from 'axios';
 class Menu extends React.Component {
     constructor(props) {
         super(props);
-
         this.joinClick = this.joinClick.bind(this);
         this.newGameClick = this.newGameClick.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.state = {
+            games: [],
+            name: ''
+        };
     }
-    state ={
-        games : [],
-        name : ''
-    };
     newGameClick(){
         axios.post('http://localhost:8080/game/create',
             {name:this.state.name})

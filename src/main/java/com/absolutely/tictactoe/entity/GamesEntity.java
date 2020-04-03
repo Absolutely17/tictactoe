@@ -36,8 +36,8 @@ public class GamesEntity {
     @Column(name = "lastMove")
     private int lastMove;
 
-    @Column(name = "isClosedByPlayer")
-    private Boolean isClosedByPlayer;
+    @Column(name = "closedByPlayer")
+    private boolean closedByPlayer;
 
     public Long getId() {
         return id;
@@ -103,12 +103,12 @@ public class GamesEntity {
         this.cells = cells;
     }
 
-    public Boolean getIsClosedByPlayer() {
-        return isClosedByPlayer;
+    public boolean getClosedByPlayer() {
+        return closedByPlayer;
     }
 
-    public void setIsClosedByPlayer(Boolean isClosedByPlayer) {
-        isClosedByPlayer = isClosedByPlayer;
+    public void setClosedByPlayer(boolean closedByPlayer) {
+        this.closedByPlayer = closedByPlayer;
     }
 
     public GamesEntity()
@@ -120,9 +120,9 @@ public class GamesEntity {
         this.opened=true;
         this.winner=null;
         this.currentMove=null;
-        this.cells = new byte[362];
+        this.cells = new byte[361];
         this.lastMove=-1;
-        this.isClosedByPlayer =false;
+        this.closedByPlayer =false;
     }
 
     public GamesEntity edit(ConnectRequest connectRequest)

@@ -57,75 +57,78 @@ public class GameService implements IGameService {
     {
         int cell = moveRequest.getCell().intValue();
         byte[] cells = game.getCells();
+        boolean isWin = false;
         if (game.getCurrentMove().equals(moveRequest.getName())) {
             if (cells[cell] == 0) {
                 if (game.getCurrentMove().equals(game.getFirstPlayer())) {
                     cells[cell] = 1;
                     game.setCurrentMove(game.getSecondPlayer());
+                    isWin = checkOnWin(cells, cell, 1);
                 }
                 else {
                     cells[cell] = 2;
                     game.setCurrentMove(game.getFirstPlayer());
+                    isWin = checkOnWin(cells, cell, 2);
                 }
-                game.setLastMove(cell);
-                if (checkOnWin(cells, cell)) {
+                if (isWin) {
                     game.setWinner(moveRequest.getName());
                     game.setCurrentMove(null);
                 }
+                game.setLastMove(cell);
                 gamesRepository.save(game);
                 return new MoveResponse(true, moveRequest.getCell());
             }
         }
         return new MoveResponse(false, moveRequest.getCell());
     }
-    public boolean checkOnWin(byte[] cells, int cell)
+    public boolean checkOnWin(byte[] cells, int cell, int markPlayer)
     {
         int i,j;
         int row = cell/19;
         int maxCellInRow = row * 19 + 19;
-        int countRow=1;
+        int count = 1;
         for (i=cell+1;i<maxCellInRow;i++)
-            if (cells[i]==1)
-                countRow++;
+            if (cells[i]==markPlayer)
+                count++;
             else break;
         for (j=cell-1;j>=row*19;j--)
-            if (cells[j]==1)
-                countRow++;
+            if (cells[j]==markPlayer)
+                count++;
             else break;
-        if (countRow==5)
+        if (count==5)
          return true;
-        int countCell = 1;
+        count = 1;
         for (i=cell+19;i<361;i+=19)
-            if (cells[i]==1)
-                countCell++;
+            if (cells[i]==markPlayer)
+                count++;
             else break;
         for (j=cell-19;j>0;j-=19)
-            if (cells[j]==1)
-                countCell++;
+            if (cells[j]==markPlayer)
+                count++;
             else break;
-        if (countCell==5)
+        if (count==5)
             return true;
-        int countDiag = 1;
+        count = 1;
         for (i=1,j=cell+20;j<maxCellInRow+19*i && j<361;i++, j+=20)
-            if (cells[j]==1)
-                countDiag++;
+            if (cells[j]==markPlayer)
+                count++;
             else break;
         for (i=1,j=cell-20;j>=row*19-19*i && j>=0;i++,j-=20)
-            if (cells[j]==1)
-                countDiag++;
+            if (cells[j]==markPlayer)
+                count++;
             else break;
-        if (countDiag==5)
+        if (count==5)
             return true;
-        countDiag = 1;
+        count = 1;
         for (i=1,j=cell-18;j<maxCellInRow-19*i && j>0;i++,j-=18)
-            if (cells[j]==1)
-                countDiag++;
+            if (cells[j]==markPlayer)
+                count++;
             else break;
         for (i=1,j=cell+18;j>=row*19+19*i && j<=361;i++, j+=18)
-            if (cells[j]==1)
-                countDiag++;
+            if (cells[j]==markPlayer)
+                count++;
             else break;
-        if (countDiag==5)
+        if (count==5)
             return true;
         return false;
     }
@@ -133,7 +136,7 @@ public class GameService implements IGameService {
     public GameSimpleResponse exitGame(Long id, String name)
     {
         GamesEntity game = getGamesById(id);
-        game.setIsClosedByPlayer(true);
+        game.setClosedByPlayer(true);
         gamesRepository.save(game);
         return new GameSimpleResponse(game);
     }

@@ -2,6 +2,10 @@ import React from "react";
 import axios from 'axios';
 
 class Square extends React.Component {
+    constructor(props) {
+        super(props);
+
+    }
     render() {
         return (
             <button className="square"
@@ -15,6 +19,7 @@ class Square extends React.Component {
 class Board extends React.Component {
     constructor(props) {
         super(props);
+        var paused;
         this.state = {
             squares: Array(361).fill(null),
             id : this.props.id,
@@ -48,8 +53,13 @@ class Board extends React.Component {
         });
     }
     renderSquare(i) {
+        let val;
+        if (this.state.squares[i]===1)
+            val = 'X';
+        else if (this.state.squares[i]===2)
+            val = 'O';
         return (<Square
-                value={this.state.squares[i]}
+                value={val}
                 onClick={() => this.handleClick(i)}
             />
         );
@@ -71,23 +81,26 @@ class Board extends React.Component {
     tick() {
         axios.get('http://localhost:8080/game/' + this.state.id + '/state')
             .then(res => {
-                const dataFromServer = res.data;
-                this.setState({data:dataFromServer});
-                console.log(this.state.name);
-                console.log(res.data.firstPlayer);
+                var binary_string = window.atob(res.data.squares);
+                var respondedSquares = new Int8Array(361);
+                for (var i=0;i<361;i++)
+                    respondedSquares[i]=binary_string.charCodeAt(i);
+                this.setState({squares:respondedSquares});
                 if (this.state.mark==='N')
                     if (this.state.name===res.data.firstPlayer) {
-                        this.setState({mark: 'X', enemyMark:'O'});
+                        this.setState({mark: '1', enemyMark:'2'});
                     }
                     else {
-                        this.setState({mark: 'O', enemyMark:'X'});
+                        this.setState({mark: '2', enemyMark:'1'});
                     }
                 else if (res.data.secondPlayer == null)
                     this.setState({info:'Ожидаем второго игрока.'});
                 else if (res.data.currentMove!=null)
                     this.setState({info:'Время ходить, ' + res.data.currentMove});
-                else if (res.data.winner!=null)
-                    this.setState({info:'Победил ' + res.data.winner});
+                else if (res.data.winner!=null) {
+                    this.setState({info: 'Победил ' + res.data.winner});
+                    clearInterval(this.timerID);
+                }
                 if (res.data.lastMove!==-1 && res.data.lastMove!==this.state.localLastMove)
                    this.moveTo(res.data.lastMove, true);
             });
@@ -106,11 +119,10 @@ class Board extends React.Component {
                     <p>{this.state.info}</p>
                 </div>
             <div>
-
                 {table}
             </div>
                 <div className="exitGame">
-                    <button onClick={() => this.exitClick} className="exitBtn">Выйти</button>
+                    <button onClick={() => this.exitClick()} className="exitBtn">Выйти</button>
                 </div>
             </div>
         );
