@@ -11,6 +11,6 @@ import java.util.List;
 public interface GamesRepository extends JpaRepository<GamesEntity, Long> {
     @Query("from GamesEntity r where r.opened =:isOpened")
     List<GamesEntity> findOpenGames(@Param("isOpened") boolean isOpened);
-    @Query("from GamesEntity r where r.closedByPlayer <>true and r.winner =\"null\"")
+    @Query("from GamesEntity r where (r.closedByPlayer <> true and r.winner is null)")
     List<GamesEntity> findAllGames();
 }

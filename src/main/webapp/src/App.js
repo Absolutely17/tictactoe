@@ -10,10 +10,9 @@ class App extends Component {
         return (
             <BrowserRouter>
                 <div>
-                    <div><p></p></div>
                     <Switch>
                         <Route path="/" component={Menu}  exact/>
-                        <Route path="/game/" component={Game} />
+                        <Route path="/game" component={Game} />
                         <Route component={Error}/>
                     </Switch>
                 </div>

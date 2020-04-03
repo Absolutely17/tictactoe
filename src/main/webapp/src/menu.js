@@ -1,61 +1,73 @@
-import ReactDOM from "react-dom";
 import React from "react";
-import axios from 'axios';
+import API from "./API";
 
 class Menu extends React.Component {
     constructor(props) {
         super(props);
         this.joinClick = this.joinClick.bind(this);
+        this.spectateClick = this.spectateClick.bind(this);
         this.newGameClick = this.newGameClick.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.state = {
             games: [],
-            name: ''
+            name: '',
+            showAllGames:false
         };
+        this.tick();
+    }
+    handleChange(event)
+    {
+        const target = event.target;
+        const name = target.name;
+        const value = name === 'showAllGames' ? target.checked : target.value;
+        this.setState({[name]:value});
     }
     newGameClick(){
-        axios.post('http://localhost:8080/game/create',
+        API.post('/game/create',
             {name:this.state.name})
             .then(res => {
                 window.location.assign('/game?id=' + res.data.id + '&name=' + this.state.name);
             })
     }
+    joinClick(gameId){
+        API.post('/game/' + gameId + '/connect',
+            {gameId : gameId,
+                name:this.state.name})
+            .then(() => {
+                window.location.assign('/game?id=' + gameId + '&name=' + this.state.name);
+            })
+    }
+    spectateClick(gameId){
+        window.location.assign('/game?id=' + gameId);
+    }
     componentDidMount() {
-        axios.get('http://localhost:8080/games')
+        this.timerID = setInterval(
+            () => this.tick(),
+            5000
+        );
+    }
+    tick() {
+        API.get('/games?isAll=' + this.state.showAllGames)
             .then(res => {
                 const games = res.data;
                 this.setState({games});
             })
     }
-    joinClick(data){
-        axios.post('http://localhost:8080/game/' + data + '/connect',
-            {gameId : data,
-            name:this.state.name})
-            .then(() => {
-                window.location.assign('/game?id=' + data + '&name=' + this.state.name);
-            })
-    }
-    handleChange(event)
-    {
-        this.setState({name:event.target.value});
-    }
     render() {
-        const openGames = [];
-
-            openGames.push(this.state.games.map(game => <td>{game.id}{game.firstPlayer} - {game.secondPlayer}</td>))
-
         return (
-            <div class="menu">
+            <div className="menu">
                 <div className="menu-column">
             <div className="menuAttr">
-                <input placeholder="Enter name" className="inputName" type="text" value={this.state.name} onChange={this.handleChange}></input>
+                <input name="name" placeholder="Enter name" className="inputName" type="text" value={this.state.name} onChange={this.handleChange}/>
+                <input name="showAllGames" type="checkbox" className="inputAllGames" checked={this.state.showAllGames} onChange={this.handleChange}/>
                 <button onClick={() => this.newGameClick()} className="startGameBtn">Start New Game</button>
             </div>
                 <div className="listGames">
                     <thead>
                     <tr>
                         <th>№</th>
-                        <th>Имя хоста</th>
+                        <th>Имя первого игрока</th>
+                        <th>Имя второго игрока</th>
                         <th>Действие</th>
                     </tr>
                     </thead>
@@ -63,8 +75,9 @@ class Menu extends React.Component {
                         <tr key={i}>
                             <td>{data.id}</td>
                             <td>{data.firstPlayer}</td>
+                            <td>{data.secondPlayer}</td>
                             <td><button onClick={() => this.joinClick(data.id)}>Присоединиться</button></td>
-
+                            {!data.opened ? (<td><button onClick={() => this.spectateClick(data.id)}>Наблюдать</button></td> ): null}
                         </tr>
                     ))}
                 </div>

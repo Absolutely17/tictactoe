@@ -25,7 +25,7 @@ public class MenuController {
             path="/games",
             produces = "application/json"
     )
-    public List<GameSimpleResponse> get(@PathVariable("all") boolean isAll )
+    public List<GameSimpleResponse> get(@RequestParam boolean isAll )
     {
         if (isAll)
             return gameService.getAllGames();
