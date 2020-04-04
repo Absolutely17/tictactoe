@@ -12,7 +12,7 @@ public interface IGameService {
     List<GameSimpleResponse> getOpenGames();
     List<GameSimpleResponse> getAllGames();
     GamesEntity getGamesById(Long id);
-    ConnectResponse edit(GamesEntity game);
+    ConnectResponse connect(GamesEntity game);
     GameSimpleResponse addGame(String name);
     MoveResponse doMove(GamesEntity game, MoveRequest moveRequest);
     GameSimpleResponse exitGame(Long id, String name);

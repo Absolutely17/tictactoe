@@ -2,16 +2,13 @@ package com.absolutely.tictactoe.controller;
 
 import com.absolutely.tictactoe.entity.GamesEntity;
 import com.absolutely.tictactoe.request.ConnectRequest;
-import com.absolutely.tictactoe.response.ConnectResponse;
 import com.absolutely.tictactoe.response.GameSimpleResponse;
 import com.absolutely.tictactoe.service.GameService;
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.util.List;
 import java.util.Map;
 
@@ -39,10 +36,10 @@ public class MenuController {
             produces = "application/json"
     )
     public ResponseEntity<?> connectToGame(@RequestBody ConnectRequest connectRequest, @PathVariable(name="gameId") Long id){
-            if (connectRequest.getName()!="") {
+            if (connectRequest.getName().equals("")) {
                 GamesEntity gamesToConnect = gameService.getGamesById(id);
                 GamesEntity gameEdited = gamesToConnect.edit(connectRequest);
-                return ResponseEntity.ok(gameService.edit(gameEdited));
+                return ResponseEntity.ok(gameService.connect(gameEdited));
             }
             else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
@@ -54,7 +51,7 @@ public class MenuController {
             produces="application/json"
     )
     public ResponseEntity<?> createGame(@RequestBody Map<String, String> request){
-        if (request.get("name")!="")
+        if (request.get("name").equals(""))
         return ResponseEntity.ok(gameService.addGame(request.get("name")));
         else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }

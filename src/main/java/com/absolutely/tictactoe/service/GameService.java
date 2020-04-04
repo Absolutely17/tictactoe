@@ -47,7 +47,7 @@ public class GameService implements IGameService {
     }
 
     @Override
-    public ConnectResponse edit(GamesEntity game)
+    public ConnectResponse connect(GamesEntity game)
     {
         gamesRepository.save(game);
         return new ConnectResponse(game);
@@ -66,7 +66,7 @@ public class GameService implements IGameService {
     {
         int cell = moveRequest.getCell().intValue();
         byte[] cells = game.getCells();
-        boolean isWin = false;
+        boolean isWin;
         if (game.getCurrentMove().equals(moveRequest.getName())) {
             if (cells[cell] == 0) {
                 if (game.getCurrentMove().equals(game.getFirstPlayer())) {
@@ -137,9 +137,7 @@ public class GameService implements IGameService {
             if (cells[j]==markPlayer)
                 count++;
             else break;
-        if (count==5)
-            return true;
-        return false;
+        return count == 5;
     }
     @Override
     public GameSimpleResponse exitGame(Long id, String name)

@@ -85,8 +85,8 @@ class Menu extends React.Component {
                             <td>{data.id}</td>
                             <td>{data.firstPlayer}</td>
                             <td>{data.secondPlayer}</td>
-                            <td><button className="joinBtn" onClick={() => this.joinClick(data.id)}>Присоединиться</button>
-                            {!data.opened ? (<button className="spectateBtn" onClick={() => this.spectateClick(data.id)}>Наблюдать</button> ): null}</td>
+                            <td>{data.opened ? (<button className="joinBtn" onClick={() => this.joinClick(data.id)}>Присоединиться</button>) : null}
+                            <button className="spectateBtn" onClick={() => this.spectateClick(data.id)}>Наблюдать</button></td>
                         </tr>
                     ))}
                 </div>
