@@ -4,6 +4,7 @@ import com.absolutely.tictactoe.entity.GamesEntity;
 import com.absolutely.tictactoe.request.MoveRequest;
 import com.absolutely.tictactoe.response.GameSimpleResponse;
 import com.absolutely.tictactoe.response.MoveResponse;
+import com.absolutely.tictactoe.response.StateResponse;
 import com.absolutely.tictactoe.service.GameService;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.aspectj.weaver.ast.Test;
@@ -23,9 +24,9 @@ public class GameController {
             path="/game/{id}/state",
             produces="application/json"
     )
-    public GameSimpleResponse getState(@PathVariable(name="id") Long id)
+    public StateResponse getState(@PathVariable(name="id") Long id)
     {
-        return new GameSimpleResponse(gameService.getGamesById(id));
+        return new StateResponse(gameService.getGamesById(id));
     }
 
     @RequestMapping(

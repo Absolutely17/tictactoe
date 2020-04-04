@@ -3,7 +3,7 @@ package com.absolutely.tictactoe.response;
 import com.absolutely.tictactoe.entity.GamesEntity;
 import org.apache.tomcat.util.codec.binary.Base64;
 
-public class GameSimpleResponse {
+public class StateResponse {
     private Long id;
     private Boolean opened;
     private String firstPlayer;
@@ -12,6 +12,7 @@ public class GameSimpleResponse {
     private String currentMove;
     private int lastMove;
     private Boolean isClosedByPlayer;
+    private String squares;
 
     public Long getId() {
         return id;
@@ -77,8 +78,14 @@ public class GameSimpleResponse {
         isClosedByPlayer = closedByPlayer;
     }
 
+    public String getSquares() {
+        return squares;
+    }
 
-    public GameSimpleResponse(GamesEntity game)
+    public void setSquares(String squares) {
+        this.squares = squares;
+    }
+    public StateResponse(GamesEntity game)
     {
         this.id=game.getId();
         this.currentMove=game.getCurrentMove();
@@ -88,5 +95,6 @@ public class GameSimpleResponse {
         this.winner=game.getWinner();
         this.lastMove=game.getLastMove();
         this.isClosedByPlayer=game.getClosedByPlayer();
+        this.squares= Base64.encodeBase64String(game.getCells());
     }
 }
