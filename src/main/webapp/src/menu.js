@@ -21,7 +21,6 @@ class Menu extends React.Component {
         const name = target.name;
         const value = name === 'showAllGames' ? target.checked : target.value;
         this.setState({[name]:value});
-        console.log(this.state.showAllGames);
     }
     newGameClick(){
         API.post('/game/create',
