@@ -36,8 +36,8 @@ public class MenuController {
             produces = "application/json"
     )
     public ResponseEntity<?> connectToGame(@RequestBody ConnectRequest connectRequest, @PathVariable(name="gameId") Long id){
-            if (!connectRequest.getName().equals("")) {
-                GamesEntity gamesToConnect = gameService.getGamesById(id);
+        GamesEntity gamesToConnect = gameService.getGamesById(id);
+        if (!connectRequest.getName().equals("") && !connectRequest.getName().equals(gamesToConnect.getFirstPlayer())) {
                 GamesEntity gameEdited = gamesToConnect.edit(connectRequest);
                 return ResponseEntity.ok(gameService.connect(gameEdited));
             }
