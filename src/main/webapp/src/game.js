@@ -5,12 +5,11 @@ import WebSocket from "./WebSocket";
 class Square extends React.Component {
 
     render() {
-        let color;
+        let color = 'square';
         if (this.props.value === 'X')
-            color='square red';
+            color+=' red';
         else if (this.props.value === 'O')
-            color='square green';
-        else color='square';
+            color+=' green';
         return (
             <button className={color}
                     onClick={() => this.props.onClick( )}>
