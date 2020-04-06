@@ -129,11 +129,11 @@ public class GameService implements IGameService {
         if (count==5)
             return true;
         count = 1;
-        for (i=1,j=cell-18;j<maxCellInRow-19*i && j>0;i++,j-=18)
+        for (i=1,j=cell-18;j<=maxCellInRow-19*i && j>0;i++,j-=18)
             if (cells[j]==markPlayer)
                 count++;
             else break;
-        for (i=1,j=cell+18;j>=row*19+19*i && j<=361;i++, j+=18)
+        for (i=1,j=cell+18;j>=row*19+19*i && j<361;i++, j+=18)
             if (cells[j]==markPlayer)
                 count++;
             else break;
