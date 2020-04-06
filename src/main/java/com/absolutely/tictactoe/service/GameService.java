@@ -104,7 +104,7 @@ public class GameService implements IGameService {
             if (cells[j]==markPlayer)
                 count++;
             else break;
-        if (count==5)
+        if (count >=5)
          return true;
         count = 1;
         for (i=cell+19;i<361;i+=19)
@@ -115,7 +115,7 @@ public class GameService implements IGameService {
             if (cells[j]==markPlayer)
                 count++;
             else break;
-        if (count==5)
+        if (count >=5)
             return true;
         count = 1;
         for (i=1,j=cell+20;j<maxCellInRow+19*i && j<361;i++, j+=20)
@@ -126,7 +126,7 @@ public class GameService implements IGameService {
             if (cells[j]==markPlayer)
                 count++;
             else break;
-        if (count==5)
+        if (count >=5)
             return true;
         count = 1;
         for (i=1,j=cell-18;j<=maxCellInRow-19*i && j>0;i++,j-=18)
@@ -137,7 +137,7 @@ public class GameService implements IGameService {
             if (cells[j]==markPlayer)
                 count++;
             else break;
-        return count == 5;
+        return count >=5;
     }
     @Override
     public GameSimpleResponse exitGame(Long id, String name)
