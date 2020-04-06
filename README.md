@@ -6,7 +6,7 @@ In base directory run this command to launch the Spring Boot:
 Server is available at http://localhost:8080
 
 # ReactJS
-In src/main/webapp run this command to launch the React app:
+In *src/main/webapp* run this command to launch the React app:
 
 	.npm start
 	
